@@ -1,0 +1,30 @@
+{
+  "name": "assign2",
+  "version": "1.0.0",
+  "description": "For assignment 2 of the web course",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+    "run": "node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/1dv523/hh222ix-examination-2.git"
+  },
+  "keywords": [
+    "node",
+    "javascript",
+    "express"
+  ],
+  "author": "Hatem Houssein",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/1dv523/hh222ix-examination-2/issues"
+  },
+  "homepage": "https://github.com/1dv523/hh222ix-examination-2#readme",
+  "dependencies": {
+    "body-parser": "^1.15.2",
+    "express": "^4.14.0",
+    "express-handlebars": "^3.0.0"
+  }
+}
