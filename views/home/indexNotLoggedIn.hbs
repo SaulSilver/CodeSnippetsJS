@@ -1,0 +1,25 @@
+<nav>
+    <ul>
+        <li><a href="/hh222ix-examination-2/views/authentication/login.hbs">Login</a></li>
+        <li><a href="/hh222ix-examination-2/views/authentication/registration.hbs">Register</a></li>
+    </ul>
+</nav>
+
+<table>
+    <tr>
+        <th>Snippets</th>
+    </tr>
+    {{#if snippets }}
+        {{#each snippets}}
+            <!--For each snippet in the array -->
+            <tr>
+                <td> {{snippet}} </td>
+            </tr>
+        {{/each}}
+    {{else}}
+        <!--If the snippets array is empty -->
+        <tr>
+            <td>There are no snippets to show.</td>
+        </tr>
+    {{/if}}
+</table>
