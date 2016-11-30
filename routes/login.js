@@ -4,10 +4,9 @@
 "use strict"
 
 let router = require('express').Router();
-console.log('Accessing the secret section ...')
-router.route('/hh222ix-examination-2/views/authentication/login.hbs')
-    .get(function (req, res) {
 
+router.route('/')
+    .get(function (req, res) {
         res.render('authentication/login');
     });
 

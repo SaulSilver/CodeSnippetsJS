@@ -5,7 +5,7 @@
 
 let router = require('express').Router();
 
-router.route('/hh222ix-examination-2/views/authentication/registration.hbs')
+router.route('/')
     .get(function (req, res) {
         res.render('authentication/registration');
     });
