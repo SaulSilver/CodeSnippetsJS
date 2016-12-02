@@ -1,8 +1,24 @@
 <!-- The view when the user is logged in -->
 <nav>
     <ul>
-        <li><a href="/hh222ix-examination-2/views/home/indexNotLoggedIn.hbs">Login</a></li>
+        <li><a href="/logout">Log out</a></li>
+        <!--TODO: logout user -->
     </ul>
 </nav>
 
-<!--TODO:Add the view for logged in
+<div>
+    <a href="snippet/create">Create a new snippet!</a>
+    <h3>Snippets</h3>
+    {{#if snippets }}
+        <ul>
+            {{#each snippets}}
+                <!--For each snippet in the array -->
+                <li> {{this.title}} created/updated by {{this.createdBy}} at {{this.updatedAt}} <br> <b>{{this.code}}</b>
+                    <a href="snippet/delete/{{id}}">Delete</a> - <a href="snippet/edit/{{id}}">Edit</a> </li>
+            {{/each}}
+        </ul>
+    {{else}}
+        <!--If the snippets array is empty -->
+        There are no snippets to show.
+    {{/if}}
+</div>

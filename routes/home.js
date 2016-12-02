@@ -1,13 +1,13 @@
 /**
  * Created by hatem on 2016-11-29.
  */
-"use strict"
+"use strict";
 
 let router = require('express').Router();
 
 router.route('/')
     .get(function (req, res) {
-        res.render('home/indexNotLoggedIn');
+        res.render('home/indexLoggedIn');
     });
 
 module.exports = router;

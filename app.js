@@ -1,13 +1,18 @@
 /**
  * Created by hatem on 2016-11-28.
  */
+"use strict";
+
 let express = require('express');
 let bodyParser = require('body-parser');
 let exphbs = require('express-handlebars');
 let path = require('path');
 
 let app = express();
-let port = process.env.PORT || 5000;
+let port = process.env.PORT || 8000;
+
+//Start the Database
+require('./libs/dbHandler').initialize();
 
 //View engine
 app.engine('.hbs', exphbs({
@@ -27,8 +32,9 @@ app.use('/', require('./routes/home.js'));
 
 app.use('/login', require('./routes/login.js'));
 app.use('/register', require('./routes/register.js'));
+app.use('/', require('./routes/snippet'));
 
-//Error handling --404 catch-all handler----------------
+//Error handling ------------------------
 app.use(function (err, request, response, next) {
     if(err.status !== 404)
         return next(err);
@@ -49,6 +55,7 @@ app.use(function (err, req, res, next) {
     res.status(403).render('error/403');
 });
 
+//Start listening to the port
 app.listen(port, () =>
     console.log('Express app is listening on port %s!', port)
 );

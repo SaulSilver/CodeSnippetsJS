@@ -5,21 +5,17 @@
     </ul>
 </nav>
 
-<table>
-    <tr>
-        <th>Snippets</th>
-    </tr>
+<div>
+    <h3>Snippets</h3>
     {{#if snippets }}
-        {{#each snippets}}
-            <!--For each snippet in the array -->
-            <tr>
-                <td> {{snippet}} </td>
-            </tr>
-        {{/each}}
+        <ul>
+            {{#each snippets}}
+                <!--For each snippet in the array -->
+                <li> {{this.title}} created/updated by {{this.createdBy}} at {{this.updatedAt}} <br> <b>{{this.code}}</b></li>
+            {{/each}}
+        </ul>
     {{else}}
         <!--If the snippets array is empty -->
-        <tr>
-            <td>There are no snippets to show.</td>
-        </tr>
+        There are no snippets to show.
     {{/if}}
-</table>
+</div>

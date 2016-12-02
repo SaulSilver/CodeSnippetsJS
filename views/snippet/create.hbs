@@ -1,0 +1,13 @@
+{{#if error}}
+    <p>
+        Error: {{error}}
+    </p>
+{{/if}}
+
+<form class="" action="/snippet/create" method="post">
+    <label>Title</label>
+    <input type="text" name="snippetTitle" value=""><br>
+    <label>Code</label>
+    <input type="text" name="snippetCode" value=""><br>
+    <button>Create!</button>
+</form>
