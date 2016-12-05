@@ -10,7 +10,6 @@ let Snippet = require('../models/Snippet');
 router.route('/snippet/')
     .get(function (req, res) {
         //TODO: session
-
         Snippet.find({}, function(error, data) {
             //Mapping the object
             let context = {
@@ -25,7 +24,7 @@ router.route('/snippet/')
                 }),
                 //TODO: session
             };
-            res.render('/home/index', context);
+            res.render('snippet/indexLoggedIn', context);
         });
     });
 

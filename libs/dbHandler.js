@@ -29,6 +29,9 @@ module.exports = {
             });
         });
 
+        //Setting the default global promise for mongoose instead mongoose deprecated promise
+        mongoose.Promise = global.Promise;
+
         //Connect to database
         mongoose.connect(dbConfig.connectionString);
     }

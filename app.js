@@ -29,10 +29,10 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 //Load routes as "mini-apps"
 app.use('/', require('./routes/home.js'));
-
+app.use('/', require('./routes/snippet'));
 app.use('/login', require('./routes/login.js'));
 app.use('/register', require('./routes/register.js'));
-app.use('/', require('./routes/snippet'));
+
 
 //Error handling ------------------------
 app.use(function (err, request, response, next) {
@@ -51,6 +51,8 @@ app.use(function (err, req, res, next) {
 });
 
 app.use(function (err, req, res, next) {
+    if (err.status !== 403)
+        return console.error(err);
     console.error(err.stack);
     res.status(403).render('error/403');
 });

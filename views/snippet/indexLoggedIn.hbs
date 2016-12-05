@@ -8,12 +8,13 @@
 
 <div>
     <a href="snippet/create">Create a new snippet!</a>
+
     <h3>Snippets</h3>
     {{#if snippets }}
         <ul>
             {{#each snippets}}
                 <!--For each snippet in the array -->
-                <li> {{this.title}} created/updated by {{this.createdBy}} at {{this.updatedAt}} <br> <b>{{this.code}}</b>
+                <li> <i>{{title}}</i> created/updated by <b>{{createdBy}}</b> at <b>{{updatedAt}}</b> <br> <b>{{code}}</b> <br>
                     <a href="snippet/delete/{{id}}">Delete</a> - <a href="snippet/edit/{{id}}">Edit</a> </li>
             {{/each}}
         </ul>
