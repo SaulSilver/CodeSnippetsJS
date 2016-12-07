@@ -7,6 +7,7 @@ let express = require('express');
 let bodyParser = require('body-parser');
 let exphbs = require('express-handlebars');
 let path = require('path');
+let session = require('express-session');
 
 let app = express();
 let port = process.env.PORT || 8000;
@@ -23,6 +24,29 @@ app.set('view engine', '.hbs');
 
 //Add support for handling HTML form data
 app.use(bodyParser.urlencoded({ extended: true }));
+
+//Setting up the session
+app.use(session({
+    name: 'snippetsession',
+    secret: '652776324hasd',
+    saveUninitialized: false,
+    resave: false,
+    cookie: {
+        secure: false,
+        httpOnly: true,
+        maxAge: 1000 * 60 * 60 * 23
+    }
+}));
+
+//Adding functionality for flash messages through the middleware pattern
+app.use(function (req, res, next) {
+    if (req.session.flash) {
+        res.locals.flash = req.session.flash;
+        //Delete it the flash from the session
+        delete req.session.flash;
+    }
+    next();
+});
 
 //Static files
 app.use(express.static(path.join(__dirname, 'public')));

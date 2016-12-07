@@ -9,8 +9,14 @@ let Snippet = require('../models/Snippet');
 //Call when listing all the snippets
 router.route('/snippet/')
     .get(function (req, res) {
-        //TODO: session
         Snippet.find({}, function(error, data) {
+            if (error) {
+                req.session.flash = {
+                    type: 'failure',
+                    message: 'Could not retrieve data from the database'
+                };
+                throw new Error('Something went wrong with the database!');
+            }
             //Mapping the object
             let context = {
                 snippets: data.map(function (snipp) {
@@ -42,12 +48,19 @@ router.route('/snippet/create')
         let snippet = new Snippet({
             title: snippTitle,
             code: snippCode,
+            //TODO: change createdBy depending on who is logged in
             createdBy: 'Hatem'
         });
 
         snippet.save().then(function() {
+            //Notify the user
+            req.session.flash = {
+                type: 'success',
+                message: 'Your snippet was created successfully!'
+            };
             res.redirect('/');
         }).catch(function (err) {
+            //TODO: Better error handling
             console.error(err);
             res.redirect('/error/500');
         });
@@ -62,10 +75,51 @@ router.route('/snippet/delete/:id')
     .post(function (req, res) {
         Snippet.findOneAndRemove({_id: req.params.id}, function(err) {
             if (err) {
+                req.session.flash = {
+                    type: 'failure',
+                    message: 'Could not delete snippet from the database'
+                };
                 throw new Error('Something went wrong while deleting the snippet');
             }
-            //TODO: session
-            res.redirect('/home/indexLoggedIn');
+            req.session.flash = {
+                type: 'success',
+                message: 'The snippet was deleted from the database'
+            };
+            res.redirect('/');
+        });
+    });
+
+//Edit step
+router.route('/snippet/edit/:id')
+    .get(function (req, res) {
+        //render the form with the id along
+        res.render('snippet/edit', {id: req.params.id});
+    })
+    .post(function (req, res) {
+        //Get the new title and code from the user input
+        let snippTitle = req.body.snippetTitle;
+        let snippCode = req.body.snippetCode;
+        //TODO: update the createdBy
+
+        //find the snippet by id and update
+        Snippet.findOneAndUpdate({_id: req.params.id}, {
+            title: snippTitle,
+            code: snippCode,
+            createdBy: 'Hatem',
+            updatedAt:  Date.now()
+        }, function (err) {
+            if (err) {
+                req.session.flash = {
+                    type: 'failure',
+                    message: 'Could not update snippet'
+                };
+                throw new Error('Something went wrong while editing the snippet' + '\n' + err);
+            }
+            req.session.flash = {
+                type: 'success',
+                message: 'The snippet was updated successfully'
+            };
+            res.redirect('/');
         });
     });
 
