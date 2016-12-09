@@ -1,11 +1,17 @@
-<form>
+{{#if error}}
+    <p>
+        Error: {{error}}
+    </p>
+{{/if}}
+
+<form class="" action="/register" method="post">
     <div>
         <label for="login_id">New Login ID: </label>
-        <input type="text" id="login_id">
+        <input type="text" name="username" id="login_id">
     </div>
     <div>
         <label for="password">New Password: </label>
-        <input type="text" id="password">
+        <input type="text" name="password" id="password">
     </div>
     <button type="submit">Register</button>
 </form>

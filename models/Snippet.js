@@ -1,5 +1,5 @@
 /**
- * Responsible for the database modeling
+ * Responsible for the database modeling of the snippet
  * Created by hatem on 2016-11-30.
  */
 "use strict";
