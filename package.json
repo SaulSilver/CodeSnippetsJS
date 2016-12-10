@@ -23,6 +23,7 @@
   },
   "homepage": "https://github.com/1dv523/hh222ix-examination-2#readme",
   "dependencies": {
+    "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.15.2",
     "express": "^4.14.0",
     "express-handlebars": "^3.0.0",
