@@ -38,7 +38,7 @@ router.route('/')
                             };
 
                             req.session.user = user.username;
-                            res.redirect('/snippet/');
+                            res.redirect('snippet');
                         });
                     } else {
                         req.session.flash = {

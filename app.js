@@ -59,7 +59,6 @@ app.use('/register', require('./routes/register.js'));
 
 //Log out user by destroying session
 app.use('/logout', function(req, res) {
-    //TODO: doesnt show the flash
     req.session.destroy(function() {
         res.redirect('/');
     });

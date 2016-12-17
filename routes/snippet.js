@@ -7,7 +7,7 @@ let router = require('express').Router();
 let Snippet = require('../models/Snippet');
 
 //Call when listing all the snippets
-router.route('/snippet/')
+router.route('/snippet')
     .get(function (req, res) {
         Snippet.find({}, function(error, data) {
             if (error) {
@@ -28,7 +28,6 @@ router.route('/snippet/')
                         id: snipp._id
                     };
                 }),
-                //TODO: session
             };
             if (!req.session.user)
                 res.render('snippet/indexNotLoggedIn', context);
@@ -40,6 +39,7 @@ router.route('/snippet/')
 //Create step
 router.route('/snippet/create')
     .get(function (req, res) {
+        console.log('yo');
         //Get the form for create
         res.render('snippet/create');
     })
@@ -51,8 +51,7 @@ router.route('/snippet/create')
         let snippet = new Snippet({
             title: snippTitle,
             code: snippCode,
-            //TODO: change createdBy depending on who is logged in
-            createdBy: 'Hatem'
+            createdBy: req.session.user
         });
 
         snippet.save().then(function() {
@@ -61,7 +60,7 @@ router.route('/snippet/create')
                 type: 'success',
                 message: 'Your snippet was created successfully!'
             };
-            res.redirect('/');
+            res.redirect('/snippet');
         }).catch(function (err) {
             //TODO: Better error handling
             console.error(err);
@@ -102,13 +101,13 @@ router.route('/snippet/edit/:id')
         //Get the new title and code from the user input
         let snippTitle = req.body.snippetTitle;
         let snippCode = req.body.snippetCode;
-        //TODO: update the createdBy
+        let userUpdate = req.session.user;
 
         //find the snippet by id and update
         Snippet.findOneAndUpdate({_id: req.params.id}, {
             title: snippTitle,
             code: snippCode,
-            createdBy: 'Hatem',
+            createdBy: userUpdate,
             updatedAt:  Date.now()
         }, function (err) {
             if (err) {
