@@ -36,6 +36,15 @@ userSchema.pre('save', function(next) {
     });
 });
 
+//Checking the password
+userSchema.methods.comparePassword = function(inputPassword, callback) {
+    bcrypt.compare(inputPassword, this.password, function (err, res) {
+        if (err)
+            return callback(err);
+        callback(null, res);
+    });
+};
+
 //creating the model
 let User = mongoose.model('User', userSchema);
 

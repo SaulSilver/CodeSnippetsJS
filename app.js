@@ -57,6 +57,19 @@ app.use('/', require('./routes/snippet'));
 app.use('/login', require('./routes/login.js'));
 app.use('/register', require('./routes/register.js'));
 
+//Log out user by destroying session
+app.use('/logout', function(req, res) {
+    //TODO: doesnt show the flash
+    req.session.destroy(function() {
+        res.redirect('/');
+    });
+});
+
+let authenticate = function(req, res, next) {
+    if(req.session && req.session.user === 'amy' && req.session.password === '123123')
+        return next();
+    else return false;
+};
 
 //Error handling ------------------------
 app.use(function (err, request, response, next) {
@@ -86,3 +99,4 @@ app.listen(port, () =>
     console.log('Express app is listening on port %s!', port)
 );
 
+module.exports = authenticate;

@@ -30,7 +30,10 @@ router.route('/snippet/')
                 }),
                 //TODO: session
             };
-            res.render('snippet/indexLoggedIn', context);
+            if (!req.session.user)
+                res.render('snippet/indexNotLoggedIn', context);
+            else
+                res.render('snippet/indexLoggedIn', context);
         });
     });
 
@@ -122,5 +125,6 @@ router.route('/snippet/edit/:id')
             res.redirect('/');
         });
     });
+
 
 module.exports = router;

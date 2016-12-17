@@ -27,13 +27,12 @@ router.route('/')
             };
             res.redirect('/');
         }).catch(function (err) {
-            //TODO: Better error handling
-            console.error(err);
+            console.log(err);
             req.session.flash = {
                 type: 'failure',
-                message: 'Your account was not created!'
+                message: 'Your account was not created! Please write a unique ID and a password with at least 6 characters'
             };
-            res.redirect('/authentication/registration');
+            res.redirect('#');
         });
     });
 
