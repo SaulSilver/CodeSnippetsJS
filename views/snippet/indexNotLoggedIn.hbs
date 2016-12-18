@@ -11,7 +11,8 @@
         <ul>
             {{#each snippets}}
                 <!--For each snippet in the array -->
-                <li> {{this.title}} created/updated by {{this.createdBy}} at {{this.updatedAt}} <br> <b>{{this.code}}</b></li>
+                <li> <b>{{this.title}}</b> created/updated by <b>{{this.createdBy}}</b> at <b>{{this.updatedAt}}</b> <br>
+                    <pre class="prettyprint">{{code}}</pre> <br></li>
             {{/each}}
         </ul>
     {{else}}
@@ -19,3 +20,4 @@
         There are no snippets to show.
     {{/if}}
 </div>
+

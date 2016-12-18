@@ -64,11 +64,11 @@ app.use('/logout', function(req, res) {
     });
 });
 
-let authenticate = function(req, res, next) {
-    if(req.session && req.session.user === 'amy' && req.session.password === '123123')
-        return next();
-    else return false;
-};
+app.use(function(req, res, next) {
+    if(!req.session)
+        res.header('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0');
+    next();
+});
 
 //Error handling ------------------------
 app.use(function (err, request, response, next) {
@@ -98,4 +98,3 @@ app.listen(port, () =>
     console.log('Express app is listening on port %s!', port)
 );
 
-module.exports = authenticate;

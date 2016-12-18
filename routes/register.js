@@ -22,14 +22,14 @@ router.route('/')
         user.save().then(function () {
             //Notify the user
             req.session.flash = {
-                type: 'success',
+                type: 'success card-panel blue lighten-3',      //Add some materialize classes for the css
                 message: 'Your account has been created successfully!'
             };
             res.redirect('/');
         }).catch(function (err) {
             console.log(err);
             req.session.flash = {
-                type: 'failure',
+                type: 'failure card-panel blue lighten-3',      //Add some materialize classes for the css
                 message: 'Your account was not created! Please write a unique ID and a password with at least 6 characters'
             };
             res.redirect('#');

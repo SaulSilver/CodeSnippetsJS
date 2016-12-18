@@ -33,7 +33,7 @@ router.route('/')
                     else if (found){
                         req.session.regenerate(function() {
                             req.session.flash = {
-                                type: 'success',
+                                type: 'success card-panel blue lighten-3',      //Add some materialize classes for the css
                                 message: 'Welcome ' + user.username + '! Now you are logged in ;)'
                             };
 
@@ -42,7 +42,7 @@ router.route('/')
                         });
                     } else {
                         req.session.flash = {
-                            type: 'failure',
+                            type: 'failure card-panel blue lighten-3',      //Add some materialize classes for the css
                             message: 'Password is incorrect'
                         };
                         res.redirect('#');
@@ -50,13 +50,12 @@ router.route('/')
                 });
             } else {
                 req.session.flash = {
-                    type: 'failure',
+                    type: 'failure card-panel blue lighten-3',      //Add some materialize classes for the css
                     message: 'Username is not found'
                 };
                 res.redirect('#');
             }
         });
     });
-
 
 module.exports = router;

@@ -1,19 +1,19 @@
 <!-- The view when the user is logged in -->
 <nav>
     <ul>
+        <li><a href="snippet/create/">Create a new snippet!</a></li>
         <li><a href="/logout">Log out</a></li>
     </ul>
 </nav>
 
 <div>
-    <a href="snippet/create/">Create a new snippet!</a>
-
     <h3>Snippets</h3>
     {{#if snippets }}
         <ul>
             {{#each snippets}}
                 <!--For each snippet in the array -->
-                <li> <i>{{title}}</i> created/updated by <b>{{createdBy}}</b> at <b>{{updatedAt}}</b> <br> <b>{{code}}</b> <br>
+                <li> <b>{{title}}</b> created/updated by <b>{{createdBy}}</b> at <b>{{updatedAt}}</b> <br>
+                    <pre class="prettyprint">{{code}}</pre>
                     <a href="snippet/delete/{{id}}">Delete</a> - <a href="snippet/edit/{{id}}">Edit</a> </li>
             {{/each}}
         </ul>
@@ -22,3 +22,5 @@
         There are no snippets to show.
     {{/if}}
 </div>
+
+

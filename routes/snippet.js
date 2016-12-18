@@ -29,6 +29,7 @@ router.route('/snippet')
                     };
                 }),
             };
+
             if (!req.session.user)
                 res.render('snippet/indexNotLoggedIn', context);
             else
@@ -38,39 +39,46 @@ router.route('/snippet')
 
 //Create step
 router.route('/snippet/create')
-    .get(function (req, res) {
-        console.log('yo');
-        //Get the form for create
+    .get(authorize, function (req, res) {
+        // authorize(req, res, res.render('snippet/create'));
         res.render('snippet/create');
     })
     .post(function (req, res) {
         let snippTitle = req.body.snippetTitle;
         let snippCode = req.body.snippetCode;
 
-        //Create the object to save
-        let snippet = new Snippet({
-            title: snippTitle,
-            code: snippCode,
-            createdBy: req.session.user
-        });
-
-        snippet.save().then(function() {
+        //Check that all the required fields are filled
+        if(!snippTitle || snippCode.length === 0) {
             //Notify the user
             req.session.flash = {
-                type: 'success',
-                message: 'Your snippet was created successfully!'
+                type: 'failure card-panel blue lighten-3',      //Add some materialize classes for the css
+                message: 'Your snippet was not created! Please fill in the title and the code'
             };
-            res.redirect('/snippet');
-        }).catch(function (err) {
-            //TODO: Better error handling
-            console.error(err);
-            res.redirect('/error/500');
-        });
+            res.redirect('#');
+        } else {
+            //Create the object to save
+            let snippet = new Snippet({
+                title: snippTitle,
+                code: snippCode,
+                createdBy: req.session.user
+            });
+
+            snippet.save().then(function() {
+                //Notify the user
+                req.session.flash = {
+                    type: 'success card-panel blue lighten-3',      //Add some materialize classes for the css
+                    message: 'Your snippet was created successfully!'
+                };
+                res.redirect('/snippet');
+            }).catch(function (err) {
+                console.error(err);
+            });
+        }
     });
 
 //Delete step
 router.route('/snippet/delete/:id')
-    .get(function (req, res) {
+    .get(authorize, function (req, res) {
         //render the form, send along the id
         res.render('snippet/delete', {id: req.params.id});
     })
@@ -78,13 +86,13 @@ router.route('/snippet/delete/:id')
         Snippet.findOneAndRemove({_id: req.params.id}, function(err) {
             if (err) {
                 req.session.flash = {
-                    type: 'failure',
+                    type: 'failure card-panel blue lighten-3',      //Add some materialize classes for the css
                     message: 'Could not delete snippet from the database'
                 };
                 throw new Error('Something went wrong while deleting the snippet');
             }
             req.session.flash = {
-                type: 'success',
+                type: 'success card-panel blue lighten-3',      //Add some materialize classes for the css
                 message: 'The snippet was deleted from the database'
             };
             res.redirect('/');
@@ -93,7 +101,7 @@ router.route('/snippet/delete/:id')
 
 //Edit step
 router.route('/snippet/edit/:id')
-    .get(function (req, res) {
+    .get(authorize, function (req, res) {
         //render the form with the id along
         res.render('snippet/edit', {id: req.params.id});
     })
@@ -103,27 +111,61 @@ router.route('/snippet/edit/:id')
         let snippCode = req.body.snippetCode;
         let userUpdate = req.session.user;
 
-        //find the snippet by id and update
-        Snippet.findOneAndUpdate({_id: req.params.id}, {
-            title: snippTitle,
-            code: snippCode,
-            createdBy: userUpdate,
-            updatedAt:  Date.now()
-        }, function (err) {
-            if (err) {
-                req.session.flash = {
-                    type: 'failure',
-                    message: 'Could not update snippet'
-                };
-                throw new Error('Something went wrong while editing the snippet' + '\n' + err);
-            }
+        //Check that no required field is empty
+        if (!snippTitle || snippCode.length === 0 || userUpdate.length === 0 ) {
             req.session.flash = {
-                type: 'success',
-                message: 'The snippet was updated successfully'
+                type: 'failure card-panel blue lighten-3',      //Add some materialize classes for the css
+                message: 'Could not update snippet, Please fill all the fields'
             };
-            res.redirect('/');
-        });
+            res.redirect('/snippet');
+        } else {
+            //find the snippet by id and update
+            Snippet.findOneAndUpdate({_id: req.params.id}, {
+                title: snippTitle,
+                code: snippCode,
+                createdBy: userUpdate,
+                updatedAt: Date.now()
+            }, function (err) {
+                if (err) {
+                    req.session.flash = {
+                        type: 'failure card-panel blue lighten-3',      //Add some materialize classes for the css
+                        message: 'Could not update snippet'
+                    };
+                    throw new Error('Something went wrong while editing the snippet' + '\n' + err);
+                }
+                req.session.flash = {
+                    type: 'success card-panel blue lighten-3',      //Add some materialize classes for the css
+                    message: 'The snippet was updated successfully'
+                };
+                res.redirect('/');
+            });
+        }
     });
 
+/**
+ * Function to authorize the user whether to show the required page
+ * @param req
+ * @param res
+ * @param next
+ * @returns {*}
+ */
+function authorize(req, res, next) {
+    if (req.session.user)
+        next();
+    else {
+        req.session.flash = {
+            type: 'failure card-panel blue lighten-3',      //Add some materialize classes for the css
+            message: 'Error 403: Forbidden'
+        };
+        res.redirect('/');
+    }
+}
+
+//Couldn't make it work
+// router.all("/snippet/:type(create|edit\/*|delete\/*)",
+//     function(request, response, next) {
+//         // If not authenticated trigger a 403 error.
+//         request.session.user ? next() : next(errorFactory(403));
+//     });
 
 module.exports = router;
