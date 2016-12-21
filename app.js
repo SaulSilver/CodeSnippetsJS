@@ -51,6 +51,13 @@ app.use(function (req, res, next) {
 //Static files
 app.use(express.static(path.join(__dirname, 'public')));
 
+//Turn off the cache for security of login
+app.use(function(req, res, next) {
+    if(req.session.user)
+        res.header('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0');
+    next();
+});
+
 //Load routes as "mini-apps"
 app.use('/', require('./routes/home.js'));
 app.use('/', require('./routes/snippet'));
@@ -62,12 +69,6 @@ app.use('/logout', function(req, res) {
     req.session.destroy(function() {
         res.redirect('/');
     });
-});
-
-app.use(function(req, res, next) {
-    if(!req.session)
-        res.header('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0');
-    next();
 });
 
 //Error handling ------------------------
